@@ -21,7 +21,7 @@ def query_data_and_send_emails(df):
     present_date = date.today()
     email_counter = 0
     for _, row in df.iterrows():
-        if (present_date >= row['reminder_date'].date()) and (row['has_paid'] == 'no'):
+        if row['has_paid'] == 'no' and present_date in (row['reminder_date'].date(), row['due_date'].date()):
             send_email(
                 subject=f"[Payment Reminder] Invoice: {row['invoice_number']}",
                 reciever_email=row['email'],
