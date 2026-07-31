@@ -1,0 +1,20 @@
+name: Daily Invoice Reminder
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # runs daily at 1:00 AM UTC (~9:00 AM Malaysia time)
+  workflow_dispatch:        # lets you also trigger it manually from GitHub's UI
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas python-dotenv
+      - run: python query_data_and_send_emails.py
+        env:
+          EMAIL: ${{ secrets.EMAIL }}
+          PASSWORD: ${{ secrets.PASSWORD }}
